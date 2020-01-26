@@ -1,0 +1,25 @@
+{% from 'viewer/image_link.html' import image_link %}
+
+{% extends 'base.html' %}
+
+{% block title %}Viewer{% endblock %}
+
+{% block content %}
+<p>Here you can see the latest pictures taken by your camera.</p>
+<h2>Most recent pictures</h2>
+{% if most_recent_pictures %}
+    {% for image_info in most_recent_pictures %}
+        {{ image_link(image_info) }}
+    {% endfor %}
+{% else %}
+    No recent pictures.
+{% endif %}
+<h2>Older pictures</h2>
+{% if older_pictures %}
+    {% for image_info in older_pictures %}
+        {{ image_link(image_info) }}
+    {% endfor %}
+{% else %}
+    No older pictures.
+{% endif %}
+{% endblock %}

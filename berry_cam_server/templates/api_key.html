@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}API Key{% endblock %}
+
+{% block content %}
+    <p>API Key of the user <i>{{ g.user.user_id }}</i>: <b>{{ g.user.api_key }}</b></p>
+    <p><a href="{{ url_for('api_key.regenerate_key') }}" title="Generate a new key and invalidate all old ones">Regenerate key</a></p>
+    <p>This API Key is required for all <a href="{{ url_for('api.doc') }}">API calls</a> that require authentication (e.g. uploading of pictures).</p>
+{% endblock %}

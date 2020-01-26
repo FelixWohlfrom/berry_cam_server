@@ -1,0 +1,105 @@
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ddd;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 60em;
+}
+
+.flash {
+    color: #fff;
+    background-color: #a00;
+    border: 1px solid #000;
+    margin: 0.5em;
+    border-radius: 0.5em;
+    animation: flasher 1s linear;
+}
+
+@keyframes flasher {
+  50% {
+    opacity: 0;
+  }
+}
+
+a {
+    color: #c51a4a;
+}
+
+header, main, footer, .flash {
+    padding: 0.5em;
+}
+
+h1, ul, footer * {
+    margin: 0;
+}
+
+header {
+    background: #ccc;
+    margin-top: 0.5em;
+    display: flex;
+}
+
+header h1 {
+    flex: auto;
+}
+
+nav {
+    align-items: center;
+    padding: 0 0.5em;
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: block;
+    padding: 0 1em;
+}
+
+main {
+    display: block;  /* for Internet Explorer 9-11 */
+    background: #fff;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    margin-bottom: 1em;
+}
+
+input[type=submit] {
+    font-weight: bold;
+    align-self: start;
+    min-width: 10em;
+}
+
+.image_link {
+    display: inline-block;
+    width: 128px;
+    text-decoration: none;
+    text-align: center;
+}
+
+footer {
+    display: flex;
+    background: #ccc;
+    text-align: center;
+}
+
+footer * {
+    flex: auto;
+}

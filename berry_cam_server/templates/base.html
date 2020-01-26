@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BerryCam - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<header>
+    <!-- BerryCam Logo -->
+    <h1>BerryCam - {{ self.title() }}</h1>
+    {% if g.user %}
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('viewer.index') }}">Viewer</a></li>
+                <li><a href="{{ url_for('api_key.index') }}">API Key</a></li>
+                <li title="Currently logged in user">{{ g.user.username }}</li>
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a>
+            </ul>
+        </nav>
+    {% endif %}
+</header>
+<main>
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+</main>
+<footer>
+    <p>&copy 2020 Felix Wohlfrom</p>
+    <a href="{{ url_for('api.doc') }}">Api</a>
+</footer>
+</body>
+</html>

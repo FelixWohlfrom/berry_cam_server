@@ -1,0 +1,6 @@
+{% macro image_link(image_info) %}
+    <a href="{{ url_for('viewer.large', path=image_info.rawfile) }}" class="image_link">
+        <img src="{{ url_for('viewer.previews', path=image_info.preview) }}" alt="{{ image_info.timestamp }}" />
+        {{ image_info.timestamp }}
+    </a>
+{% endmacro %}
