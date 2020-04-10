@@ -5,7 +5,7 @@
 {% block title %}Viewer{% endblock %}
 
 {% block content %}
-<p>Here you can see the latest pictures taken by your camera.</p>
+<p>Here you can see the latest pictures taken by your camera. <a href="?cleanup=true">Clean up</a></p>
 <h2>Most recent pictures</h2>
 {% if most_recent_pictures %}
     {% for image_info in most_recent_pictures %}

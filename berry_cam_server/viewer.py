@@ -1,7 +1,8 @@
 import os
-from datetime import datetime
+import shutil
+from datetime import datetime, timezone
 
-from flask import Blueprint, render_template, current_app, send_from_directory
+from flask import Blueprint, render_template, current_app, send_from_directory, request, redirect
 
 from .auth import login_required
 
@@ -17,6 +18,12 @@ def index():
     :return: Rendered template
     :rtype: str
     """
+    if request.args.get('cleanup') == 'true':
+        shutil.rmtree(os.path.join(current_app.config["UPLOAD_DIR"], 'raw'))
+        os.mkdir(os.path.join(current_app.config["UPLOAD_DIR"], 'raw'))
+        shutil.rmtree(os.path.join(current_app.config["UPLOAD_DIR"], 'previews'))
+        os.mkdir(os.path.join(current_app.config["UPLOAD_DIR"], 'previews'))
+        return redirect('./')
 
     most_recent = []
     older = []
@@ -32,7 +39,7 @@ def index():
         image_info = {
             "preview": preview,
             "rawfile": raw_file,
-            "timestamp": datetime.utcfromtimestamp(float(timestamp)).strftime('%Y-%m-%d %H:%M:%S')
+            "timestamp": datetime.fromtimestamp(float(timestamp) / 100, timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
         }
 
         if len(most_recent) < 5:
@@ -40,7 +47,6 @@ def index():
         else:
             older.append(image_info)
 
-    # TODO Autorefresh on new images
     return render_template('viewer.html', most_recent_pictures=most_recent, older_pictures=older)
 
 

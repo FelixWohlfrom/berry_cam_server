@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Cameras{% endblock %}
+
+{% block content %}
+    <h2>Connected cameras</h2>
+    {% if cameras %}
+        {% for camera in cameras %}
+            <p>
+            Camera: {{ camera }} <a href="?name={{ camera }}&action=delete">Remove</a> <br />
+            Last connection:
+            {% if cameras[camera].last_connection_pending %}
+                <span class="connection_pending">{{ cameras[camera].last_connection }}</span>
+            {% else %}
+                {{ cameras[camera].last_connection }}
+            {% endif %} <br />
+            Camera: <span title="Current camera status. Might take a few seconds to be updated">
+                {% if cameras[camera].camera_enabled %}
+                    <span class="camera_enabled">Enabled</span>
+                {% else %}
+                    <span class="camera_disabled">Disabled</span>
+                {% endif %}
+            </span>
+            {% if cameras[camera].get('enabled', False) %}
+                <a href="?name={{ camera }}&enable=false" title="It might take some seconds until the camera is disabled">Disable</a>
+            {% else %}
+                <a href="?name={{ camera }}&enable=true" title="It might take some seconds until the camera is enabled">Enable</a>
+            {% endif %}
+            </p>
+        {% endfor %}
+    {% else %}
+        No cameras connected.
+    {% endif %}
+{% endblock %}

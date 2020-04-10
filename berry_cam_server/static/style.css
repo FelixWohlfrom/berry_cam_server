@@ -47,7 +47,7 @@ header h1 {
 
 nav {
     align-items: center;
-    padding: 0 0.5em;
+    padding-left: 0;
 }
 
 nav ul {
@@ -60,7 +60,7 @@ nav ul {
 
 nav ul li {
     display: block;
-    padding: 0 1em;
+    padding-left: 1em;
 }
 
 main {
@@ -102,4 +102,16 @@ footer {
 
 footer * {
     flex: auto;
+}
+
+.connection_pending, .camera_disabled {
+    color: #a00;
+}
+
+.connection_pending {
+    title: "The camera did not send a heartbeat signal for quite some time. Is it still running?"
+}
+
+.camera_enabled {
+    color: #0a0;
 }

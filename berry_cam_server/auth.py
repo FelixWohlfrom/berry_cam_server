@@ -1,10 +1,10 @@
 
 import functools
 import hashlib
+from http import HTTPStatus
 
 from flask import Blueprint, flash, redirect, url_for, render_template, request, session, g
 from flask_restx import abort, reqparse
-from http import HTTPStatus
 
 from .common.conf import Config
 

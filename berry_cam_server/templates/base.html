@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>BerryCam - {% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% if g.user %}
+        <meta http-equiv="refresh" content="10" />
+    {% endif %}
 </head>
 <body>
 <header>
@@ -15,8 +18,9 @@
             <ul>
                 <li><a href="{{ url_for('viewer.index') }}">Viewer</a></li>
                 <li><a href="{{ url_for('api_key.index') }}">API Key</a></li>
-                <li title="Currently logged in user">{{ g.user.username }}</li>
-                <li><a href="{{ url_for('auth.logout') }}">Logout</a>
+                <li><a href="{{ url_for('cameras.index') }}">Cameras</a></li>
+                <li><span title="Currently logged in user">{{ g.user.username }}</span>
+                    <a href="{{ url_for('auth.logout') }}">Logout</a></li>
             </ul>
         </nav>
     {% endif %}

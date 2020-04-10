@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, url_for, redirect, g
 
-from .common.conf import Config
 from .auth import login_required
+from .common.conf import Config
 
 bp = Blueprint('api_key', __name__, url_prefix='/api_key')
 

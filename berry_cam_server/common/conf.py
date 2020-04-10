@@ -1,5 +1,6 @@
 import os
 import secrets
+from datetime import datetime, timezone
 
 import yaml
 
@@ -79,3 +80,43 @@ class Config:
                 api_keys.add(config["user"][user]["api_key"])
 
         return api_keys
+
+    @staticmethod
+    def set_camera_info(name, enabled):
+        with open(Config.config_file, 'r') as config_file:
+            config = yaml.safe_load(config_file)
+
+        with open(Config.config_file, 'w') as config_file:
+            if "cameras" not in config:
+                config["cameras"] = {}
+
+            if name not in config["cameras"]:
+                config["cameras"][name] = {}
+
+            config["cameras"][name]["last_connection"] = int(datetime.now(tz=timezone.utc).timestamp())
+            config["cameras"][name]["camera_enabled"] = enabled
+            yaml.safe_dump(config, config_file)
+
+    @staticmethod
+    def enable_camera(name, enabled):
+        with open(Config.config_file, 'r') as config_file:
+            config = yaml.safe_load(config_file)
+
+        with open(Config.config_file, 'w') as config_file:
+            config["cameras"][name]["enabled"] = enabled
+            yaml.safe_dump(config, config_file)
+
+    @staticmethod
+    def remove_camera(name):
+        with open(Config.config_file, 'r') as config_file:
+            config = yaml.safe_load(config_file)
+
+        with open(Config.config_file, 'w') as config_file:
+            del config["cameras"][name]
+            yaml.safe_dump(config, config_file)
+
+    @staticmethod
+    def get_connected_cameras():
+        with open(Config.config_file, 'r') as config_file:
+            config = yaml.safe_load(config_file)
+            return config.get("cameras", {})

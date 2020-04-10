@@ -82,6 +82,8 @@ def create_app(test_config=None):
     app.register_blueprint(auth.bp)
     from . import api_key
     app.register_blueprint(api_key.bp)
+    from . import cameras
+    app.register_blueprint(cameras.bp)
 
     from . import viewer
     app.register_blueprint(viewer.bp)

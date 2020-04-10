@@ -1,3 +1,4 @@
+import os
 import datetime
 from datetime import timezone
 from http import HTTPStatus
@@ -133,3 +134,31 @@ def test_authentication_access_login(app, client, auth):
         # Check for raw image
         response = client.get('/large/1578643805.png')
         assert response.status_code == HTTPStatus.OK
+
+
+def test_cleanup_images(app, client, auth):
+    """
+    Tests that cleanup of images works fine and remvoes all images.
+
+    :param Flask app: The flask application to test.
+    :param FlaskClient client: The client to run the test with.
+    :param AuthActions auth: The authentication object to use for login.
+    """
+    generate_test_images(app.config.get('UPLOAD_DIR'),
+                         10,
+                         datetime.datetime(year=2020, month=1, day=10, hour=8, minute=10, second=5))
+
+    auth.login()
+
+    with client:
+        assert os.listdir(os.path.join(app.config.get('UPLOAD_DIR'), 'raw'))
+        assert os.listdir(os.path.join(app.config.get('UPLOAD_DIR'), 'previews'))
+
+        response = client.get('/?cleanup=true', follow_redirects=True)
+
+        assert response.status_code == HTTPStatus.OK
+        assert urlparse(response.location).path == b''
+        assert b'No recent pictures.' in response.data
+        assert b'No older pictures.' in response.data
+        assert not os.listdir(os.path.join(app.config.get('UPLOAD_DIR'), 'raw'))
+        assert not os.listdir(os.path.join(app.config.get('UPLOAD_DIR'), 'previews'))

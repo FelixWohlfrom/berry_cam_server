@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from http import HTTPStatus
 
 from PIL import Image
@@ -23,6 +23,11 @@ class Pictures(Resource):
     Handler class for picture related REST Api.
     """
 
+    @api.doc(responses={200: 'Success',
+                        400: 'Invalid file types',
+                        429: 'On too many requests',
+                        403: 'On invalid API key',
+                        500: 'On errors while creating thumbnails.'})
     @auth.api_key_required
     @api.expect(upload_parser)
     def post(self):
@@ -37,14 +42,15 @@ class Pictures(Resource):
         args = upload_parser.parse_args()
 
         if args.file.content_type not in ['image/png', 'image/jpeg']:
-            abort(HTTPStatus.BAD_REQUEST, "Invalid file type given. Only images allowed.")
+            abort(HTTPStatus.BAD_REQUEST,
+                  "Invalid file type given. Only images allowed. Given file type: {}".format(args.file.content_type))
 
-        filename = int(datetime.utcnow().timestamp())
+        filename = int(datetime.now(timezone.utc).timestamp() * 100)
         extension = 'png' if args.file.content_type == 'image/png' else 'jpg'
         raw_image = os.path.join(current_app.config["UPLOAD_DIR"], "raw", "{}.{}".format(filename, extension))
 
         if os.path.exists(raw_image):
-            abort(HTTPStatus.TOO_MANY_REQUESTS, "You can only upload one image per second.")
+            abort(HTTPStatus.TOO_MANY_REQUESTS, "Please don't spam the server and reduce image upload frequency.")
 
         args.file.save(raw_image)
 
